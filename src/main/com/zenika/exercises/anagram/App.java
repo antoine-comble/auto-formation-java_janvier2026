@@ -1,12 +1,12 @@
-package main.com.zenika.exercises;
+package main.com.zenika.exercises.anagram;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
-import static main.com.zenika.exercises.Utils.anagramFrom;
-import static main.com.zenika.exercises.Utils.readDictionary;
+import static main.com.zenika.exercises.anagram.Utils.anagramFrom;
+import static main.com.zenika.exercises.anagram.Utils.readDictionary;
 
 public class App {
 

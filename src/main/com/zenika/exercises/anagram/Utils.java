@@ -1,4 +1,4 @@
-package main.com.zenika.exercises;
+package main.com.zenika.exercises.anagram;
 
 import java.io.IOException;
 import java.nio.file.Files;
