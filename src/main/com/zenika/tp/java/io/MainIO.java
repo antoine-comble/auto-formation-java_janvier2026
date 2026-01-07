@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class MainIO {
+
+    static String filePath = "C:\\Users\\Antoine\\Documents\\_dev\\FormationJava\\out\\production\\FormationJava\\main\\com\\zenika\\tp\\java\\io\\person.ser";
+
     static void main(String[] args) {
         writePerson();
         readPerson();
@@ -16,7 +19,7 @@ public class MainIO {
     static void writePerson() {
         PersonRecord personRecord = new PersonRecord("John", "Doe", 25);
 
-        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Antoine\\Documents\\_dev\\FormationJava\\out\\production\\FormationJava\\main\\com\\zenika\\tp\\java\\io\\person.ser");
+        try (FileOutputStream fos = new FileOutputStream(filePath);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
             oos.writeObject(personRecord);
@@ -29,7 +32,7 @@ public class MainIO {
 
     static void readPerson() {
         try {
-            FileInputStream fis = new FileInputStream("C:\\Users\\Antoine\\Documents\\_dev\\FormationJava\\out\\production\\FormationJava\\main\\com\\zenika\\tp\\java\\io\\person.ser");
+            FileInputStream fis = new FileInputStream(filePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             PersonRecord person = (PersonRecord) ois.readObject();
