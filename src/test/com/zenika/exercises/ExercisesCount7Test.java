@@ -7,32 +7,32 @@ import org.junit.jupiter.api.Test;
 public class ExercisesCount7Test {
 
     @Test
-    void sumDigits_0_give_0() {
+    void count7_0_give_0() {
         Assertions.assertEquals(0, Exercises.count7(0));
     }
 
     @Test
-    void sumDigits_1_give_0() {
+    void count7_1_give_0() {
         Assertions.assertEquals(0, Exercises.count7(1));
     }
 
     @Test
-    void sumDigits_2_give_0() {
+    void count7_2_give_0() {
         Assertions.assertEquals(0, Exercises.count7(2));
     }
 
     @Test
-    void sumDigits_7_give_1() {
+    void count7_7_give_1() {
         Assertions.assertEquals(1, Exercises.count7(7));
     }
 
     @Test
-    void sumDigits_123_give_0() {
+    void count7_123_give_0() {
         Assertions.assertEquals(0, Exercises.count7(123));
     }
 
     @Test
-    void sumDigits_727_give_2() {
+    void count7_727_give_2() {
         System.out.println(727%7);
         Assertions.assertEquals(2, Exercises.count7(727));
     }
