@@ -1,10 +1,11 @@
 package main.com.zenika.tp.java.collection.pile;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class PileParComposition implements Pile {
 
-    private LinkedList internalList = new LinkedList();
+    private List internalList = new LinkedList();
 
     @Override
     public Object depiler() {
