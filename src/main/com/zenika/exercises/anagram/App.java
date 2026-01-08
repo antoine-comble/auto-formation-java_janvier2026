@@ -20,7 +20,7 @@ public class App {
         System.out.println("result = " + result);
     }
 
-    static String decodeAnagram(String anagram, List<String> data) {
+    public static String decodeAnagram(String anagram, List<String> data) {
         for (int i = 0; i < data.size(); i++) {
             if (equalsIgnoreOrder(anagram, data.get(i))) {
                 return data.get(i);

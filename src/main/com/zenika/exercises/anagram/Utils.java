@@ -29,7 +29,7 @@ public class Utils {
         return new String(chars);
     }
 
-    static List<String> readDictionary() throws IOException {
+    public static List<String> readDictionary() throws IOException {
         final Path path = Paths.get("C:\\Users\\Antoine\\Documents\\_dev\\FormationJava\\src\\main\\resources\\names.txt");
         return Files.readAllLines(path);
     }
