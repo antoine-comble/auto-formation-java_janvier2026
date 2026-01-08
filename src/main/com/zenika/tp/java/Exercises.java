@@ -161,4 +161,8 @@ public class Exercises {
         if (n == 1) return base;
         return powerN(base, n - 1) * base;
     }
+
+    public static long countX(String str) {
+        return str.chars().filter(c -> c == 'x').count();
+    }
 }
