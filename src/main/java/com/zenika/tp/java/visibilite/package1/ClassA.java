@@ -1,4 +1,4 @@
-package main.com.zenika.tp.java.visibilite.package1;
+package com.zenika.tp.java.visibilite.package1;
 
 public class ClassA {
     public String attributPublic;

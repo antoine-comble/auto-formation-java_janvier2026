@@ -1,23 +1,29 @@
-package test.com.zenika.exercises;
+package com.zenika.exercises;
 
-import main.com.zenika.tp.java.Exercises;
-import org.junit.jupiter.api.Assertions;
+import com.zenika.tp.java.Exercises;
+
+import java.util.stream.Stream;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class ExercisesMakes10Test {
-
-    @Test
-    public void makes10_9_10() {
-        Assertions.assertTrue(Exercises.makes10(9, 10));
+    static Stream<Arguments> makes10_can_return_the_correct_value() {
+        return Stream.of(
+            Arguments.of(9, 10, true),
+            Arguments.of(9, 1, true),
+            Arguments.of(8, 8, false),
+            Arguments.of(9, 19, false)
+        );
     }
 
-    @Test
-    public void makes10_9_1() {
-        Assertions.assertTrue(Exercises.makes10(9, 1));
-    }
-
-    @Test
-    public void makes10_8_8() {
-        Assertions.assertFalse(Exercises.makes10(8, 8));
+    @ParameterizedTest @MethodSource 
+    void makes10_can_return_the_correct_value(int first, int second, boolean expected) {
+        Assertions.assertThat(Exercises.makes10(first, second))
+            .describedAs(String.format("When entering %d and %d, we should return %s, no?", first, second, expected))
+            .isEqualTo(expected);
     }
 }

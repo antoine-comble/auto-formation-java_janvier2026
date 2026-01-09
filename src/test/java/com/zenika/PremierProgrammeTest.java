@@ -1,6 +1,6 @@
-package test.com.zenika;
+package com.zenika;
 
-import main.com.zenika.PremierProgramme;
+import com.zenika.PremierProgramme;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

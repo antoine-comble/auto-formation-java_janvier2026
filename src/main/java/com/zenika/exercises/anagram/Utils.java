@@ -1,11 +1,14 @@
-package main.com.zenika.exercises.anagram;
+package com.zenika.exercises.anagram;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -30,8 +33,16 @@ public class Utils {
     }
 
     public static List<String> readDictionary() throws IOException {
-        final Path path = Paths.get("C:\\Users\\Antoine\\Documents\\_dev\\FormationJava\\src\\main\\resources\\names.txt");
-        return Files.readAllLines(path);
+        try(
+            InputStream inputStream = Utils.class.getClassLoader().getResourceAsStream("names.txt");
+            Scanner s = new Scanner(inputStream).useDelimiter("\n")
+            ) {
+            // Source - https://stackoverflow.com/a/35446009
+            // Posted by Slava Vedenin, modified by community. See post 'Timeline' for change history
+            // Retrieved 2026-01-09, License - CC BY-SA 4.0
+
+            return s.tokens().collect(Collectors.toList());
+        }
     }
 }
 

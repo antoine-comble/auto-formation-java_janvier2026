@@ -1,6 +1,6 @@
-package main.com.zenika.tp.java.io;
+package com.zenika.tp.java.io;
 
-import main.com.zenika.tp.java.collection.common.PersonRecord;
+import com.zenika.tp.java.collection.common.PersonRecord;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

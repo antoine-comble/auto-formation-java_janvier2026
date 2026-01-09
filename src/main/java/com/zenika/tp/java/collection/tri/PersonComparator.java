@@ -1,6 +1,6 @@
-package main.com.zenika.tp.java.collection.tri;
+package com.zenika.tp.java.collection.tri;
 
-import main.com.zenika.tp.java.collection.common.Person;
+import com.zenika.tp.java.collection.common.Person;
 
 import java.util.Comparator;
 

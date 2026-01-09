@@ -1,4 +1,4 @@
-package main.com.zenika.date;
+package com.zenika.date;
 
 import java.time.*;
 import java.time.temporal.Temporal;

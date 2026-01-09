@@ -1,6 +1,6 @@
-package main.com.zenika.tp.java.collection.common;
+package com.zenika.tp.java.collection.common;
 
-import main.com.zenika.tp.java.exception.MineurException.MineurException;
+import com.zenika.tp.java.exception.MineurException.MineurException;
 
 import java.io.Serializable;
 import java.util.Objects;

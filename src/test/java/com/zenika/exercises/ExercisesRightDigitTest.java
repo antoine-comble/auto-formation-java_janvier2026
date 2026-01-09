@@ -1,6 +1,6 @@
-package test.com.zenika.exercises;
+package com.zenika.exercises;
 
-import main.com.zenika.tp.java.Exercises;
+import com.zenika.tp.java.Exercises;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
-package main.com.zenika.tp.java.visibilite.package2;
+package com.zenika.tp.java.visibilite.package2;
 
-import main.com.zenika.tp.java.visibilite.package1.ClassA;
+import com.zenika.tp.java.visibilite.package1.ClassA;
 
 public class ClassC extends ClassA {
 

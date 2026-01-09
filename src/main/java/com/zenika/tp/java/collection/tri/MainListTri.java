@@ -1,7 +1,7 @@
-package main.com.zenika.tp.java.collection.tri;
+package com.zenika.tp.java.collection.tri;
 
-import main.com.zenika.tp.java.collection.common.Person;
-import main.com.zenika.tp.java.collection.list.MainList;
+import com.zenika.tp.java.collection.common.Person;
+import com.zenika.tp.java.collection.list.MainList;
 
 import java.util.List;
 

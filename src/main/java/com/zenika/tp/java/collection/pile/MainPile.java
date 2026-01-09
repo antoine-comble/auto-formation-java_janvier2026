@@ -1,4 +1,4 @@
-package main.com.zenika.tp.java.collection.pile;
+package com.zenika.tp.java.collection.pile;
 
 import java.util.logging.Logger;
 

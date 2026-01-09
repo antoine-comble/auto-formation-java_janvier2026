@@ -1,4 +1,4 @@
-package main.com.zenika;
+package com.zenika;
 
 public class PremierProgramme {
 

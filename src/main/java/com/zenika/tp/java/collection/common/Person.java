@@ -1,4 +1,4 @@
-package main.com.zenika.tp.java.collection.common;
+package com.zenika.tp.java.collection.common;
 
 import java.util.Objects;
 

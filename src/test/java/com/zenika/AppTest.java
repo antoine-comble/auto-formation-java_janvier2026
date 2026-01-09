@@ -1,12 +1,12 @@
-package test.com.zenika;
+package com.zenika;
 
 
-import main.com.zenika.exercises.anagram.App;
+import com.zenika.exercises.anagram.App;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import static main.com.zenika.exercises.anagram.Utils.*;
+import static com.zenika.exercises.anagram.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {

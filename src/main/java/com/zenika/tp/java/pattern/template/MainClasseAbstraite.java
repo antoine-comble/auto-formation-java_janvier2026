@@ -1,4 +1,4 @@
-package main.com.zenika.tp.java.pattern.template;
+package com.zenika.tp.java.pattern.template;
 
 public class MainClasseAbstraite {
 

@@ -1,4 +1,4 @@
-package main.com.zenika.tp.java;
+package com.zenika.tp.java;
 
 import java.util.List;
 import java.util.stream.Collectors;

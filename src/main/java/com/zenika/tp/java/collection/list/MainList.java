@@ -1,8 +1,8 @@
-package main.com.zenika.tp.java.collection.list;
+package com.zenika.tp.java.collection.list;
 
-import main.com.zenika.tp.java.collection.common.Person;
-import main.com.zenika.tp.java.collection.common.PersonRecord;
-import main.com.zenika.tp.java.exception.MineurException.MineurException;
+import com.zenika.tp.java.collection.common.Person;
+import com.zenika.tp.java.collection.common.PersonRecord;
+import com.zenika.tp.java.exception.MineurException.MineurException;
 
 import java.util.*;
 import java.util.stream.Collectors;
