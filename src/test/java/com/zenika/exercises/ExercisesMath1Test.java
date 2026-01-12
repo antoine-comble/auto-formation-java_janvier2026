@@ -1,33 +1,27 @@
 package com.zenika.exercises;
 
 import com.zenika.tp.java.Exercises;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ExercisesMath1Test {
 
-    @Test
-    public void math1_10_give_110() {
-        List<Integer> expected = new ArrayList<>();
-        expected.add(110);
-        List<Integer> actual = new ArrayList<>();
-        actual.add(10);
-        Assertions.assertArrayEquals(expected.toArray(), Exercises.math1(actual).toArray());
+    static Stream<Arguments> math1_can_return_the_correct_value() {
+        return Stream.of(
+                Arguments.of(List.of(10), List.of(110)),
+                Arguments.of(List.of(1, 2, 3, 4), List.of(20, 30, 40, 50))
+        );
     }
 
-    @Test
-    public void math1_1_2_3_give_20_30_40() {
-        List<Integer> expected = new ArrayList<>();
-        expected.add(20);
-        expected.add(30);
-        expected.add(40);
-        List<Integer> actual = new ArrayList<>();
-        actual.add(1);
-        actual.add(2);
-        actual.add(3);
-        Assertions.assertArrayEquals(expected.toArray(), Exercises.math1(actual).toArray());
+    @ParameterizedTest
+    @MethodSource
+    void math1_can_return_the_correct_value(List<Integer> actual, List<Integer> expected) {
+        org.assertj.core.api.Assertions.assertThat(Exercises.math1(actual))
+                .describedAs(String.format("When entering (%s), we should return %s, no?", actual, expected))
+                .isEqualTo(expected);
     }
 }
