@@ -5,7 +5,9 @@ import com.zenika.tp.java.collection.common.PersonRecord;
 import com.zenika.tp.java.exception.MineurException.MineurException;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MainList {
 
@@ -101,92 +103,94 @@ public class MainList {
         return persons;
     }
 
-    static void main() {
+    public static void main(String[] args) {
 
-        System.out.println("-----");
+        final Logger logger = Logger.getLogger(MainList.class.getName());
+        logger.info("-----");
 
         // List iterator
         final Iterator<Person> iterator = createPersonList().iterator();
         iterator.forEachRemaining(System.out::println);
 
-        System.out.println("-- List triée --");
+        logger.info("-- List triée --");
         createPersonList().stream().sorted().forEach(System.out::println);
 
-        System.out.println("-- Set trié --");
+        logger.info("-- Set trié --");
         createPersonSet().forEach(System.out::println);
 
-        System.out.println("-- TreeSet --");
+        logger.info("-- TreeSet --");
         createPersonTreeSet().forEach(System.out::println);
 
 
         // stream
         createPersonRecordList().stream()
                 .forEach(person ->
-                        System.out.println(person.firstName() + " " + person.name())
+                        logger.info(person.firstName() + " " + person.name())
                 );
 
-        System.out.println("");
-        System.out.println("Suppression des doublons (prénom et nom égaux)");
-        System.out.println("");
-        System.out.println("Suppression des prénoms de moins de 4 lettres et tri par ordre alphabétique prénom");
+        logger.info("");
+        logger.info("Suppression des doublons (prénom et nom égaux)");
+        logger.info("");
+        logger.info("Suppression des prénoms de moins de 4 lettres et tri par ordre alphabétique prénom");
         createPersonRecordList().stream()
                 .distinct()
                 .filter(person -> person.firstName().length() > 3)
                 .sorted(Comparator.comparing(PersonRecord::firstName))
                 .forEach(person ->
-                        System.out.println(person.firstName() + " " + person.name())
+                        logger.info(person.firstName() + " " + person.name())
                 );
 
-        System.out.println("");
-        System.out.println("Suppression des prénoms de moins de 4 lettres et tri par ordre Z à A prénom");
+        logger.info("");
+        logger.info("Suppression des prénoms de moins de 4 lettres et tri par ordre Z à A prénom");
         createPersonRecordList().stream()
                 .distinct()
                 .filter(person -> person.firstName().length() > 3)
                 .sorted(Comparator.comparing(PersonRecord::firstName).reversed())
                 .forEach(person ->
-                        System.out.println(person.firstName() + " " + person.name())
+                        logger.info(person.firstName() + " " + person.name())
                 );
 
-        System.out.println("");
-        System.out.println("Suppression des prénoms de moins de 4 lettres et tri par ordre alphabétique prénom puis nom");
-        createPersonRecordList().stream()
-                .distinct()
-                .filter(person -> person.firstName().length() > 3)
-                .sorted(Comparator.comparing(PersonRecord::firstName).thenComparing(Comparator.comparing(PersonRecord::name)))
-                .forEach(person ->
-                        System.out.println(person.firstName() + " " + person.name())
-                );
+        logger.info("Suppression des prénoms de moins de 4 lettres et tri par ordre alphabétique prénom puis nom : " + (trouverLesPersonnesAvecPrenomPlus4Lettres(createPersonRecordList(), true)));
 
-        System.out.println("");
-        System.out.println("Suppression des prénoms de moins de 4 lettres et tri par ordre alphabétique prénom puis Z à A nom");
+        logger.info("");
+        logger.info("Suppression des prénoms de moins de 4 lettres et tri par ordre alphabétique prénom puis Z à A nom");
         createPersonRecordList().stream()
                 .distinct()
                 .filter(person -> person.firstName().length() > 3)
                 .sorted(Comparator.comparing(PersonRecord::firstName).thenComparing(Comparator.comparing(PersonRecord::name).reversed()))
                 .forEach(person ->
-                        System.out.println(person.firstName() + " " + person.name())
+                        logger.info(person.firstName() + " " + person.name())
                 );
 
-        System.out.println("");
-        System.out.println("Suppression des prénoms de moins de 4 lettres et tri par ordre Z à A prénom puis Z à A nom : " + createPersonRecordList().stream()
+        logger.info("");
+        logger.info("Suppression des prénoms de moins de 4 lettres et tri par ordre Z à A prénom puis Z à A nom : " + createPersonRecordList().stream()
                 .distinct()
                 .filter(person -> person.firstName().length() > 3)
                 .sorted(Comparator.comparing(PersonRecord::firstName).reversed().thenComparing(Comparator.comparing(PersonRecord::name).reversed()))
                 .map(PersonRecord::toString).collect(Collectors.joining(",")));
 
-        trouverLesMineurs();
-
+        logger.info("Mineurs : " + trouverLesMineurs(createPersonRecordList()));
+        logger.info("Mineurs : " + trouverLesMineurs(createPersonRecordList()));
     }
 
-    private static void trouverLesMineurs() {
-        final List<PersonRecord> personnesMineures = createPersonRecordList().stream()
+    public static List<PersonRecord> trouverLesMineurs(List<PersonRecord> personsList) {
+        return personsList.stream()
                 .distinct()
                 .filter(MainList::estMineurOuPas)
                 .collect(Collectors.toList());
-
-        System.out.println("Personnes mineures : " + personnesMineures.stream().map(PersonRecord::toString).collect(Collectors.joining(",")));
-
     }
+
+    public static List<PersonRecord> trouverLesPersonnesAvecPrenomPlus4Lettres(List<PersonRecord> personsList, boolean sortAlphabetic) {
+        Stream<PersonRecord> result = personsList.stream()
+                .filter(person -> person.firstName().length() > 3);
+
+        if (sortAlphabetic) {
+            result = result.sorted(Comparator.comparing(PersonRecord::firstName).thenComparing(Comparator.comparing(PersonRecord::name)));
+        }
+
+        return result.toList();
+    }
+
 
     private static boolean estMineurOuPas(PersonRecord personRecord) {
         try {
