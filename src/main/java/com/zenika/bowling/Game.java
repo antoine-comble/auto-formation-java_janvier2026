@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class Game {
 
@@ -126,7 +127,7 @@ public class Game {
 
     private int getInternalScore(int i, int nextRoll, int nextNextRoll) {
         int internalScore = 0;
-        if (NormalFrame.class.equals(frames.get(i + nextRoll).getClass())) {
+        if (NormalFrame.class.equals(frames.get(i + nextNextRoll).getClass())) {
             internalScore = ((NormalFrame)frames.get(i + nextNextRoll)).firstRoll.orElseGet(() -> 0);
         } else if (LastFrame.class.equals(frames.get(i + nextNextRoll).getClass())) {
             internalScore = ((LastFrame)frames.get(i + nextNextRoll)).firstRoll.orElseGet(() -> 0);
@@ -153,4 +154,69 @@ public class Game {
         }
     }
 
+    // Condition(s) d'arrêt :
+        //
+        //
+    // Contrainte 0 : strike et avant dernier coup
+    // Contrainte 1 : strike et pas avant dernier coup
+    // Contrainte 2 : spare
+    // Contrainte 3 (default) : coup normal
+
+
+    // score(totalScore, frames, currentFrameIndex)
+    // { strike ? normal ? spare ?
+    //   si pas de suivant => retourne 0
+    //   si strike => suivant + suivant + courant
+    //   si spare => suivant + courant
+    //   si normal => courant
+    // }
+
+    int calculateScoreRecursive(int totalScore, List<Frame> frames, int currentFrameIndex) {
+        int total = totalScore;
+        if (currentFrameIndex == -1) {
+            return total;
+        }
+        total +=  + frames.get(currentFrameIndex).score();
+        if (currentFrameIndex == (frames.size()-1) && !frames.get(currentFrameIndex).getClass().equals(NormalFrame.class)) {
+            // si pas de suivant et strike ou spare => retourne 0
+            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        }
+        if (frames.get(currentFrameIndex).getClass().equals(NormalFrame.class)
+                && !((NormalFrame) frames.get(currentFrameIndex)).isSpareFrame()) {
+            // si normal => total + score courant
+            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        }
+        if (currentFrameIndex < frames.size()
+                && frames.get(currentFrameIndex).getClass().equals(NormalFrame.class)
+                && ((NormalFrame) frames.get(currentFrameIndex)).isSpareFrame()) {
+            // si spare => total + score courant + premier lancer suivant
+            if (frames.get(currentFrameIndex + 1).getClass().equals(NormalFrame.class)) {
+                total += ((NormalFrame) frames.get(currentFrameIndex + 1)).firstRoll.orElseGet(() -> 0);
+            } else if (frames.get(currentFrameIndex + 1).getClass().equals(LastFrame.class)) {
+                total += ((LastFrame) frames.get(currentFrameIndex + 1)).firstRoll.orElseGet(() -> 0);
+            } else {
+                total += ((StrikeFrame) frames.get(currentFrameIndex + 1)).singleRoll.orElseGet(() -> 0);
+            }
+            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        }
+        if (currentFrameIndex < (frames.size() - 2)
+                && frames.get(currentFrameIndex).getClass().equals(StrikeFrame.class)) {
+            // si spare => total + score courant + premier lancer suivant
+            total += frames.get(currentFrameIndex + 1).score() + frames.get(currentFrameIndex + 2).score();
+            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        }
+        if (currentFrameIndex == (frames.size() - 2)
+                && frames.get(currentFrameIndex).getClass().equals(StrikeFrame.class)) {
+            total += frames.get(currentFrameIndex + 1).score() - ((LastFrame) frames.get(currentFrameIndex + 1)).score();
+            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        }
+        if (currentFrameIndex < (frames.size() - 1)
+                && frames.get(currentFrameIndex).getClass().equals(StrikeFrame.class)) {
+            // si spare => total + score courant + premier lancer suivant
+            total += frames.get(currentFrameIndex + 1).score();
+            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        }
+        currentFrameIndex = currentFrameIndex - 1;
+        return calculateScoreRecursive(total, frames, currentFrameIndex);
+    }
 }
