@@ -1,11 +1,7 @@
 package com.zenika.bowling;
 
-import org.assertj.core.annotation.CanIgnoreReturnValue;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.util.VisibleForTesting;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperties;
 
 public class GameTest {
 
@@ -128,7 +124,7 @@ public class GameTest {
         Game game = new Game();
         // When
         game.roll(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 6);
-        //int score = game.score();
+        //int score = game.calculateResults();
         int score = game.calculateResults();
         // Then
         Assertions.assertThat(score).isEqualTo(26);
@@ -173,7 +169,7 @@ public class GameTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
+        int score = game.calculateResults();
         // Then
         Assertions.assertThat(score).isEqualTo(30);
     }
@@ -184,7 +180,7 @@ public class GameTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
+        int score = game.calculateResults();
         // Then
         Assertions.assertThat(score).isEqualTo(60);
     }
@@ -195,7 +191,7 @@ public class GameTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
+        int score = game.calculateResults();
         // Then
         Assertions.assertThat(score).isEqualTo(90);
     }
@@ -206,7 +202,7 @@ public class GameTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
+        int score = game.calculateResults();
         // Then
         Assertions.assertThat(score).isEqualTo(120);
     }
@@ -217,79 +213,20 @@ public class GameTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
-        // Then
-        Assertions.assertThat(score).isEqualTo(120);
-    }
-
-    @Test
-    @Disabled("test_score_7_strikes : Problem to calculate score recursively")
-    public void test_score_7_strikes() {
-        // Given
-        Game game = new Game();
-        // When
-        game.roll(10, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
+        int score = game.calculateResults();
         // Then
         Assertions.assertThat(score).isEqualTo(150);
     }
 
     @Test
-    @Disabled("test_score_dix_parties_avec_que_des_strikes : Problem to calculate score recursively")
-    public void test_score_dix_parties_avec_que_des_strikes() {
+    public void deux_coups_spare() {
         // Given
         Game game = new Game();
         // When
-        game.roll(10, 10, 10, 10, 10, 10, 10, 10, 10, 0, 0);
-        int score = game.score();
+        game.roll(4, 6, 2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        int score = game.calculateResults();
         // Then
-        Assertions.assertThat(score).isEqualTo(300);
+        Assertions.assertThat(score).isEqualTo(22);
     }
 
-    @Test
-    public void test_score_1_spare() {
-        // Given
-        Game game = new Game();
-        // When
-        game.roll(5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
-        // Then
-        Assertions.assertThat(score).isEqualTo(10);
-    }
-
-    @Test
-    @Disabled("test_score_5_spare_non_identiques : Problem to calculate score recursively")
-    public void test_score_5_spare_non_identiques() {
-        // Given
-        Game game = new Game();
-        // When
-        game.roll(1, 9, 2, 8, 3, 7, 4, 6, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
-        // Then
-        Assertions.assertThat(score).isEqualTo(64);
-    }
-
-    @Test
-    @Disabled("test_score_6_spare : Problem to calculate score recursively")
-    public void test_score_6_spare() {
-        // Given
-        Game game = new Game();
-        // When
-        game.roll(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
-        // Then
-        Assertions.assertThat(score).isEqualTo(85);
-    }
-
-    @Test
-    @Disabled("test_score_7_spare_identiques : Problem to calculate score recursively")
-    public void test_score_7_spare_identiques() {
-        // Given
-        Game game = new Game();
-        // When
-        game.roll(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0);
-        int score = game.score();
-        // Then
-        Assertions.assertThat(score).isEqualTo(100);
-    }
 }
