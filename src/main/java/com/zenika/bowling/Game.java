@@ -171,6 +171,7 @@ public class Game {
             }
         }
         // normal frame
+
         currentFrameIndex = currentFrameIndex - 1;
         return score(total, frames, currentFrameIndex);
     }
