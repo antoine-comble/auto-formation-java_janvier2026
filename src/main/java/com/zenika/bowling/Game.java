@@ -137,11 +137,10 @@ public class Game {
      * @return
      */
     int score(int totalScore, List<Frame> frames, int currentFrameIndex) {
-        int total = totalScore;
         if (currentFrameIndex == -1) {
-            return total;
+            return totalScore;
         }
-        total +=  + frames.get(currentFrameIndex).score();
+        int total = totalScore + frames.get(currentFrameIndex).score();
         if (isLastFrame(frames, currentFrameIndex)) {
             // si derniere frame
             return score(total, frames, --currentFrameIndex);
@@ -149,9 +148,9 @@ public class Game {
         if (isSpareFrame(frames, currentFrameIndex)) {
             // si spare => total + score courant + premier lancer suivant
             total += switch (frames.get(currentFrameIndex+1)) {
-                case NormalFrame nf -> nf.firstRoll.orElseGet(() -> 0);
-                case LastFrame lf -> lf.firstRoll.orElseGet(() -> 0);
-                case StrikeFrame sf -> sf.singleRoll.orElseGet(() -> 0);
+                case NormalFrame nf -> nf.firstRoll.orElse(0);
+                case LastFrame lf -> lf.firstRoll.orElse(0);
+                case StrikeFrame sf -> sf.singleRoll.orElse(0);
                 default -> throw new IllegalStateException("Unexpected value: " + frames.get(currentFrameIndex+1));
             };
             return score(total, frames, --currentFrameIndex);
@@ -171,6 +170,7 @@ public class Game {
                 return score(total, frames, --currentFrameIndex);
             }
         }
+        // normal frame
 
         currentFrameIndex = currentFrameIndex - 1;
         return score(total, frames, currentFrameIndex);
