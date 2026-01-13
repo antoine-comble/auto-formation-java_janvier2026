@@ -1,7 +1,6 @@
 package com.zenika.bowling;
 
 public interface Frame {
-    Game.RecursiveScore score(Game.RecursiveScore nextScore);
 
     void roll(int score);
 

@@ -7,13 +7,6 @@ public class StrikeFrame implements Frame{
 
     public int totalScore = 0;
 
-    @Override
-    public Game.RecursiveScore score(Game.RecursiveScore nextScore) {
-        return new Game.RecursiveScore(
-                nextScore.score() + score() + nextScore.currentScore() + nextScore.nextScore()
-                , score(), nextScore.currentScore(), nextScore.nextScore());
-    }
-
     /**
      * Add score
      *
