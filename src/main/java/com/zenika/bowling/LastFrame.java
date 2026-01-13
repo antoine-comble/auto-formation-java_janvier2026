@@ -9,11 +9,6 @@ public class LastFrame implements Frame {
 
     int totalScore = 0;
 
-    @Override
-    public Game.RecursiveScore score(Game.RecursiveScore nextScore) {
-        return null;
-    }
-
     /**
      * Add score
      *

@@ -3,8 +3,6 @@ package com.zenika.bowling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 public class Game {
 
@@ -71,27 +69,6 @@ public class Game {
         return frames.getLast();
     }
 
-    /**
-     * Computation is in fact reverse
-     * @return
-     */
-    int score() {
-        return scoreRecursively(frames).score();
-    }
-
-    public record RecursiveScore(int score, int currentScore, int nextScore, int nextNextScore) {}
-
-    RecursiveScore scoreRecursively(List<Frame> frames) {
-        if(frames.isEmpty()) {
-            // We compute the last frame
-            return new RecursiveScore(0, 0,0, 0);
-        } else {
-            Frame currentFrame = frames.getFirst();
-            RecursiveScore nextScore = scoreRecursively(frames.subList(1, frames.size() - 1));
-            return currentFrame.score(nextScore);
-        }
-    }
-
     int calculateResults() {
         for (int i = 0; i < frames.size(); i++) {
             Frame currentFrame = frames.get(i);
@@ -101,22 +78,22 @@ public class Game {
             } else if (i == 9) {
                 currentFrame.setTotalScore(currentFrame.score() + frames.get(i - 1).getTotalScore());
             } else {
-                if (!currentFrame.getClass().equals(StrikeFrame.class)
-                        && (currentFrame.getClass().equals(NormalFrame.class) && !((NormalFrame) currentFrame).isSpareFrame())) {
+                if (!(currentFrame instanceof StrikeFrame)
+                        && (currentFrame instanceof NormalFrame && !((NormalFrame) currentFrame).isSpareFrame())) {
                     currentFrame.setTotalScore(currentFrame.score() + frames.get(i - 1).getTotalScore());
                 }
-                if (currentFrame.getClass().equals(StrikeFrame.class) && i != 8) {
-                    if (frames.get(i + 1).getClass().equals(StrikeFrame.class)) {
+                if (currentFrame instanceof StrikeFrame && i != 8) {
+                    if (frames.get(i + 1) instanceof StrikeFrame) {
                         int internalScore = getInternalScore(i, 1, 2);
                         currentFrame.setTotalScore(frames.get(i - 1).getTotalScore() + currentFrame.score() + frames.get(i + 1).score() + internalScore);
                     } else {
                         currentFrame.setTotalScore(frames.get(i - 1).getTotalScore() + currentFrame.score() + frames.get(i + 1).score());
                     }
                 }
-                if (currentFrame.getClass().equals(StrikeFrame.class) && i == 8) {
+                if (currentFrame instanceof StrikeFrame && i == 8) {
                     currentFrame.setTotalScore(frames.get(i - 1).getTotalScore() + currentFrame.score() + frames.get(i + 1).score() - ((LastFrame) frames.get(i + 1)).thirdRoll.orElseGet(() -> 0));
                 }
-                if ((currentFrame.getClass().equals(NormalFrame.class) && ((NormalFrame) currentFrame).isSpareFrame())) {
+                if ((currentFrame instanceof NormalFrame && ((NormalFrame) currentFrame).isSpareFrame())) {
                     int internalScore = getInternalScore(i, 1, 1);
                     currentFrame.setTotalScore(frames.get(i - 1).getTotalScore() + currentFrame.score() + internalScore);
                 }
@@ -138,85 +115,77 @@ public class Game {
     }
 
     private void calculateFirstFrame(int i, Frame currentFrame) {
-        if (!currentFrame.getClass().equals(StrikeFrame.class)
-                && (currentFrame.getClass().equals(NormalFrame.class) && !((NormalFrame) currentFrame).isSpareFrame())) {
+        if (!(currentFrame instanceof StrikeFrame)
+                && (currentFrame instanceof NormalFrame && !((NormalFrame) currentFrame).isSpareFrame())) {
             currentFrame.setTotalScore(currentFrame.score());
         }
-        if (currentFrame.getClass().equals(StrikeFrame.class)) {
-            if (frames.get(i + 1).getClass().equals(StrikeFrame.class)) {
+        if (currentFrame instanceof StrikeFrame) {
+            if (frames.get(i + 1) instanceof StrikeFrame) {
                 currentFrame.setTotalScore(currentFrame.score() + frames.get(i + 1).score() + getInternalScore(i, 1, 2));
             } else {
                 currentFrame.setTotalScore(currentFrame.score() + frames.get(i + 1).score());
             }
         }
-        if (currentFrame.getClass().equals(NormalFrame.class) && ((NormalFrame) currentFrame).isSpareFrame()) {
+        if (currentFrame instanceof NormalFrame && ((NormalFrame) currentFrame).isSpareFrame()) {
             currentFrame.setTotalScore(currentFrame.score() + getInternalScore(i, 1, 1));
         }
     }
 
-    // Condition(s) d'arrêt :
-        //
-        //
-    // Contrainte 0 : strike et avant dernier coup
-    // Contrainte 1 : strike et pas avant dernier coup
-    // Contrainte 2 : spare
-    // Contrainte 3 (default) : coup normal
 
-
-    // score(totalScore, frames, currentFrameIndex)
-    // { strike ? normal ? spare ?
-    //   si pas de suivant => retourne 0
-    //   si strike => suivant + suivant + courant
-    //   si spare => suivant + courant
-    //   si normal => courant
-    // }
-
-    int calculateScoreRecursive(int totalScore, List<Frame> frames, int currentFrameIndex) {
+    /**
+     * Computation is in fact reverse
+     * @return
+     */
+    int score(int totalScore, List<Frame> frames, int currentFrameIndex) {
         int total = totalScore;
         if (currentFrameIndex == -1) {
             return total;
         }
         total +=  + frames.get(currentFrameIndex).score();
-        if (currentFrameIndex == (frames.size()-1) && !frames.get(currentFrameIndex).getClass().equals(NormalFrame.class)) {
-            // si pas de suivant et strike ou spare => retourne 0
-            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+        if (isLastFrame(frames, currentFrameIndex)) {
+            // si derniere frame
+            return score(total, frames, --currentFrameIndex);
         }
-        if (frames.get(currentFrameIndex).getClass().equals(NormalFrame.class)
-                && !((NormalFrame) frames.get(currentFrameIndex)).isSpareFrame()) {
-            // si normal => total + score courant
-            return calculateScoreRecursive(total, frames, --currentFrameIndex);
-        }
-        if (currentFrameIndex < frames.size()
-                && frames.get(currentFrameIndex).getClass().equals(NormalFrame.class)
-                && ((NormalFrame) frames.get(currentFrameIndex)).isSpareFrame()) {
+        if (isSpareFrame(frames, currentFrameIndex)) {
             // si spare => total + score courant + premier lancer suivant
-            if (frames.get(currentFrameIndex + 1).getClass().equals(NormalFrame.class)) {
-                total += ((NormalFrame) frames.get(currentFrameIndex + 1)).firstRoll.orElseGet(() -> 0);
-            } else if (frames.get(currentFrameIndex + 1).getClass().equals(LastFrame.class)) {
-                total += ((LastFrame) frames.get(currentFrameIndex + 1)).firstRoll.orElseGet(() -> 0);
-            } else {
-                total += ((StrikeFrame) frames.get(currentFrameIndex + 1)).singleRoll.orElseGet(() -> 0);
+            total += switch (frames.get(currentFrameIndex+1)) {
+                case NormalFrame nf -> nf.firstRoll.orElseGet(() -> 0);
+                case LastFrame lf -> lf.firstRoll.orElseGet(() -> 0);
+                case StrikeFrame sf -> sf.singleRoll.orElseGet(() -> 0);
+                default -> throw new IllegalStateException("Unexpected value: " + frames.get(currentFrameIndex+1));
+            };
+            return score(total, frames, --currentFrameIndex);
+        }
+        if (isStrikeFrame(frames, currentFrameIndex)) {
+            if (currentFrameIndex < (frames.size() - 2)) {
+                // si strike => total + score courant + score suivant + score suivant suivant
+                total += frames.get(currentFrameIndex + 1).score() + frames.get(currentFrameIndex + 2).score();
+                return score(total, frames, --currentFrameIndex);
             }
-            return calculateScoreRecursive(total, frames, --currentFrameIndex);
+            if (currentFrameIndex == (frames.size() - 2)) {
+                return score(total, frames, --currentFrameIndex);
+            }
+            if (currentFrameIndex < (frames.size() - 1)) {
+                // si strike => total + score courant + score suivant
+                total += frames.get(currentFrameIndex + 1).score();
+                return score(total, frames, --currentFrameIndex);
+            }
         }
-        if (currentFrameIndex < (frames.size() - 2)
-                && frames.get(currentFrameIndex).getClass().equals(StrikeFrame.class)) {
-            // si spare => total + score courant + premier lancer suivant
-            total += frames.get(currentFrameIndex + 1).score() + frames.get(currentFrameIndex + 2).score();
-            return calculateScoreRecursive(total, frames, --currentFrameIndex);
-        }
-        if (currentFrameIndex == (frames.size() - 2)
-                && frames.get(currentFrameIndex).getClass().equals(StrikeFrame.class)) {
-            total += frames.get(currentFrameIndex + 1).score() - ((LastFrame) frames.get(currentFrameIndex + 1)).score();
-            return calculateScoreRecursive(total, frames, --currentFrameIndex);
-        }
-        if (currentFrameIndex < (frames.size() - 1)
-                && frames.get(currentFrameIndex).getClass().equals(StrikeFrame.class)) {
-            // si spare => total + score courant + premier lancer suivant
-            total += frames.get(currentFrameIndex + 1).score();
-            return calculateScoreRecursive(total, frames, --currentFrameIndex);
-        }
+
         currentFrameIndex = currentFrameIndex - 1;
-        return calculateScoreRecursive(total, frames, currentFrameIndex);
+        return score(total, frames, currentFrameIndex);
+    }
+
+    private boolean isStrikeFrame(List<Frame> frames, int currentFrameIndex) {
+        return frames.get(currentFrameIndex) instanceof StrikeFrame;
+    }
+
+    private static boolean isSpareFrame(List<Frame> frames, int currentFrameIndex) {
+        return frames.get(currentFrameIndex) instanceof NormalFrame
+                && ((NormalFrame) frames.get(currentFrameIndex)).isSpareFrame();
+    }
+
+    private static boolean isLastFrame(List<Frame> frames, int currentFrameIndex) {
+        return currentFrameIndex == (frames.size() - 1);
     }
 }

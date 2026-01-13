@@ -8,17 +8,6 @@ public class NormalFrame implements Frame {
 
     int totalScore = 0;
 
-    @Override
-    public Game.RecursiveScore score(Game.RecursiveScore nextScore) {
-        if (!isSpareFrame()) {
-            return new Game.RecursiveScore(
-                    nextScore.score() + score(), score(), nextScore.currentScore(), nextScore.nextScore());
-        } else {
-            return new Game.RecursiveScore(
-                    nextScore.score() + score() + nextScore.currentScore(), score(), nextScore.currentScore(), nextScore.nextScore());
-        }
-    }
-
     /**
      * Add score
      *

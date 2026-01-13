@@ -10,7 +10,7 @@ public class GameRecursiveTest {
         // Given
         Game game = new Game();
         // When
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(0);
     }
@@ -21,7 +21,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(20);
     }
@@ -32,7 +32,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 6);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(26);
     }
@@ -43,7 +43,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(29);
     }
@@ -54,7 +54,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(180);
     }
@@ -65,7 +65,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(10);
     }
@@ -76,7 +76,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(1, 9, 2, 8, 3, 7, 4, 6, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(64);
     }
@@ -87,7 +87,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(85);
     }
@@ -98,7 +98,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(100);
     }
@@ -109,7 +109,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(300);
     }
@@ -120,7 +120,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(150);
     }
@@ -131,7 +131,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(3, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(9);
     }
@@ -142,7 +142,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(4, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(10);
     }
@@ -153,7 +153,7 @@ public class GameRecursiveTest {
         Game game = new Game();
         // When
         game.roll(4, 6, 2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        int score = game.calculateScoreRecursive(0, game.frames, game.frames.size() - 1);
+        int score = game.score(0, game.frames, game.frames.size() - 1);
         // Then
         Assertions.assertThat(score).isEqualTo(22);
     }
